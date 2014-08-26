@@ -9,4 +9,4 @@ goog.addDependency("../sablono/core.js", ['sablono.core'], ['goog.dom', 'sablono
 goog.addDependency("../om/dom.js", ['om.dom'], ['cljs.core']);
 goog.addDependency("../om/core.js", ['om.core'], ['cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
 goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
-goog.addDependency("../csv_visualiser/core.js", ['csv_visualiser.core'], ['goog.dom.classes', 'cljs.core', 'sablono.core', 'goog.events.EventType', 'om.core', 'cljs.reader', 'goog.events']);
+goog.addDependency("../csv_visualiser/core.js", ['csv_visualiser.core'], ['goog.dom.classes', 'cljs.core', 'sablono.core', 'goog.events.EventType', 'om.core', 'clojure.string', 'cljs.reader', 'goog.events']);

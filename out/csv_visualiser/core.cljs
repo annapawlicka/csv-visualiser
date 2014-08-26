@@ -3,16 +3,14 @@
             [goog.events :as events]
             [goog.dom.classes :as classes]
             [sablono.core :as html :refer-macros [html]]
-            [cljs.reader :as reader])
+            [cljs.reader :as reader]
+            [clojure.string :as string])
   (:import [goog.events EventType]))
 
 (enable-console-print!)
 
-(def app-model (atom {:dependencies []
+(def app-model (atom {:contents []
                       :alert {}}))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Helpers
 
 (defn log [& s]
   (.log js/console (apply str s)))
@@ -22,7 +20,8 @@
 
 
 (defn process-file [file cursor]
-  )
+ (let [datas (map #(string/split % ",") (string/split file "\n"))]
+   (om/update! cursor :contents datas)))
 
 (defn handle-file-select [cursor evt]
   (.stopPropagation evt)
@@ -64,45 +63,42 @@
     om/IRender
     (render [_]
       (html
-       [:p "Drop your project.clj here"]))))
+       [:p "Drop your CSV here"]))))
 
-;; FIXME doesn't work without --disable-web-security in chrome
-;; clojars are either not setting cross domain headers or PEBKAC.
-(defn dependencies-list [cursor owner]
+(defn csv-contents-table [cursor owner]
   (reify
     om/IRender
     (render [_]
       (html
        [:div
         [:div.well.well-lg
-         [:table.table
+         [:table.table.table-striped.table-hover
           [:thead
            [:tr
-            [:th "Name"] [:th "Version"] [:th "Status"] [:th "Newer versions"]]]
+            (for [c (first (:contents cursor))]
+              [:th c])]]
           [:tbody
-           (for [dependency (:dependencies cursor)]
-             (let [{:keys [name version status]} dependency
-                   {:keys [label latest]} status]
-               [:tr
-                [:td (str name)]
-                [:td (str version)]
-                [:td label]
-                [:td (interpose ", " latest)]]))]]]]))))
+           (for [r (rest (:contents cursor))]
+              [:tr (for [d r]
+              [:td d])])
+           ]]]]))))
 
-(defn is-it-time-view [cursor owner]
+(defn see-my-csv [cursor owner]
   (reify
     om/IRender
     (render [_]
       (html
        [:div
         [:div.class.page-header
-         [:h1 "See my CSV"]]
-        (if-not (seq (:dependencies cursor))
+         [:h1 "See my CSV" [:button {:type "button"
+                                     :class "btn btn-warning pull-right"
+                                     :on-click (fn [e] (om/update! cursor :contents (apply map list (:contents @cursor))))} "Transpose!"]]]
+        (if-not (seq (:contents cursor))
           [:div {:id "drop-zone"}
            [:div.well.well-lg
             (om/build drop-zone cursor)]]
           [:div
-           (om/build dependencies-list cursor)])]))))
+           (om/build csv-contents-table cursor)])]))))
 
-(om/root is-it-time-view app-model
+(om/root see-my-csv app-model
          {:target (.getElementById js/document "app")})
