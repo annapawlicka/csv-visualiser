@@ -1,0 +1,12 @@
+goog.addDependency("base.js", ['goog'], []);
+goog.addDependency("../cljs/core.js", ['cljs.core'], ['goog.string', 'goog.object', 'goog.string.StringBuffer', 'goog.array']);
+goog.addDependency("../clojure/set.js", ['clojure.set'], ['cljs.core']);
+goog.addDependency("../clojure/string.js", ['clojure.string'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
+goog.addDependency("../clojure/walk.js", ['clojure.walk'], ['cljs.core']);
+goog.addDependency("../sablono/util.js", ['sablono.util'], ['goog.Uri', 'cljs.core', 'clojure.set', 'clojure.string', 'clojure.walk']);
+goog.addDependency("../sablono/interpreter.js", ['sablono.interpreter'], ['sablono.util', 'cljs.core', 'clojure.string']);
+goog.addDependency("../sablono/core.js", ['sablono.core'], ['goog.dom', 'sablono.util', 'cljs.core', 'sablono.interpreter', 'clojure.string', 'clojure.walk']);
+goog.addDependency("../om/dom.js", ['om.dom'], ['cljs.core']);
+goog.addDependency("../om/core.js", ['om.core'], ['cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
+goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
+goog.addDependency("../csv_visualiser/core.js", ['csv_visualiser.core'], ['goog.dom.classes', 'cljs.core', 'sablono.core', 'goog.events.EventType', 'om.core', 'cljs.reader', 'goog.events']);
